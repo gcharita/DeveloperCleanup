@@ -1,0 +1,22 @@
+[
+    {
+        "name": "DerivedData",
+        "path": "~/Library/Developer/Xcode/DerivedData"
+    },
+    {
+        "name": "Archives",
+        "path": "~/Library/Developer/Xcode/Archives"
+    },
+    {
+        "name": "iOS DeviceSupport",
+        "path": "~/Library/Developer/Xcode/iOS DeviceSupport"
+    },
+    {
+        "name": "Simulator Caches",
+        "path": "~/Library/Developer/CoreSimulator/Caches"
+    },
+    {
+        "name": "Additional Simulators",
+        "path": "/Library/Developer/CoreSimulator/Profiles/Runtimes"
+    }
+]
