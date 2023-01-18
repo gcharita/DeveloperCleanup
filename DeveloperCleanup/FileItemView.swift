@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FileItemView: View {
-    let directory: SizedDirectory
+    @ObservedObject var directory: SizedDirectory
     let deleteAction: () -> Void
     
     @State var isHover = false
@@ -23,12 +23,17 @@ struct FileItemView: View {
             HStack {
                 Text(directory.name)
                     .frame(maxWidth: .infinity, minHeight: 21, alignment: .leading)
-                if isHover, directory.size != nil {
-                    Button("Delete") {
-                        deleteAction()
-                    }
+                if isHover, case .ready(.some) = directory.size {
+                    Button("Delete", action: deleteAction)
                 }
-                Text(directory.size ?? "Not exists")
+                switch directory.size {
+                case .ready(let value):
+                    Text(value ?? "Not exists")
+                case .calculating:
+                    ProgressView().progressViewStyle(.circular).controlSize(.small)
+                default:
+                    Text("Not exists")
+                }
             }
             .padding()
         }

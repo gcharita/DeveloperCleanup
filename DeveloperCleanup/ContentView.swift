@@ -18,7 +18,7 @@ struct ContentView: View {
                 }
             }
             .onTapGesture {
-                guard directory.size != nil else { return }
+                guard case .ready(.some) = directory.size else { return }
                 NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: directory.path)
             }
         }
@@ -27,6 +27,10 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(viewModel: ContentViewModel())
+        ContentView(viewModel: ContentViewModel(directories: [
+            .init(name: "Test 1", path: "", size: .calculating),
+            .init(name: "Test 2", path: "", size: .ready(value: "20,2 GB")),
+            .init(name: "Test 3", path: "", size: .error(NSError(domain: "Test domain", code: -2))),
+        ]))
     }
 }

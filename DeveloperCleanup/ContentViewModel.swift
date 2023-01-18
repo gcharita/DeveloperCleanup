@@ -12,23 +12,43 @@ struct Directory: Codable {
     let path: String
 }
 
-struct SizedDirectory {
+class SizedDirectory: ObservableObject {
+    enum DirectorySize {
+        case calculating
+        case ready(value: String?)
+        case error(Error)
+    }
+    
     let name: String
     let path: String
-    var size: String?
+    @Published var size: DirectorySize = .calculating
+    
+    init(name: String, path: String, size: SizedDirectory.DirectorySize) {
+        self.name = name
+        self.path = path
+        self.size = size
+    }
     
     init(directory: Directory) {
         name = directory.name
         path = directory.path.replacingOccurrences(of: "~", with: FileManager.default.homeDirectoryForCurrentUser.path)
-        size = size(forPath: path)
+        DispatchQueue.global(qos: .userInitiated).async { [self] in
+            let backgroundSize = size(forPath: path)
+            DispatchQueue.main.async { [self] in
+                size = backgroundSize
+                if case .ready(let value) = size {
+                    print("Size calculated for \(path): \(value ?? "mil")")
+                }
+            }
+        }
     }
     
-    private func size(forPath path: String) -> String? {
+    private func size(forPath path: String) -> DirectorySize {
         do {
-            return try URL(fileURLWithPath: path).sizeOnDisk()
+            return .ready(value: try URL(fileURLWithPath: path).sizeOnDisk())
         } catch {
             print("Error: \(error)")
-            return nil
+            return .error(error)
         }
     }
 }
@@ -36,8 +56,12 @@ struct SizedDirectory {
 class ContentViewModel: ObservableObject {
     @Published var directories = [SizedDirectory]()
     
-    init() {
-        updateDirectories()
+    init(directories: [SizedDirectory] = []) {
+        if !directories.isEmpty {
+            self.directories = directories
+        } else {
+            updateDirectories()
+        }
     }
     
     func delete(directory: SizedDirectory) {
