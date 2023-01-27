@@ -20,5 +20,17 @@
         "name": "Additional Simulators",
         "path": "/Library/Developer/CoreSimulator/Profiles/Runtimes",
         "autoCalculate": false
+    },
+    {
+        "name": "iPhone Software Updates",
+        "path": "~/Library/iTunes/iPhone Software Updates"
+    },
+    {
+        "name": "Previous iTunes Libraries",
+        "path": "~/Music/iTunes/Previous iTunes Libraries"
+    },
+    {
+        "name": "Backup",
+        "path": "~/Library/Application Support/MobileSync/Backup"
     }
 ]

@@ -28,6 +28,7 @@ struct ContentView: View {
                 )
             }
         }
+        .frame(height: viewModel.viewHeight)
     }
 }
 

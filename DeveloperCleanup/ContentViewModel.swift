@@ -66,10 +66,12 @@ class SizedDirectory: ObservableObject {
 
 class ContentViewModel: ObservableObject {
     @Published var directories = [SizedDirectory]()
+    @Published var viewHeight: CGFloat?
     
     init(directories: [SizedDirectory] = []) {
         if !directories.isEmpty {
             self.directories = directories
+            updateViewHeight()
         } else {
             updateDirectories()
         }
@@ -95,9 +97,20 @@ class ContentViewModel: ObservableObject {
             let data = try Data(contentsOf: url.require(hint: "directories.json file not exist in app bundle."))
             
             directories = try decoder.decode([Directory].self, from: data).map(SizedDirectory.init)
+            updateViewHeight()
         } catch {
             preconditionFailure("directories.json file not configured correctly: \(error)")
         }
+    }
+    
+    private func updateViewHeight() {
+        if directories.count <= 6 {
+            viewHeight = nil
+            return
+        }
+        var height = CGFloat(directories.count) * 51
+        height += CGFloat(directories.count - 1) * 15
+        viewHeight = floor(height)
     }
 }
 

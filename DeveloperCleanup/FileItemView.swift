@@ -25,12 +25,15 @@ struct FileItemView: View {
             HStack {
                 Text(directory.name)
                     .frame(maxWidth: .infinity, minHeight: 21, alignment: .leading)
-                Button("Open", action: openAction)
                 switch directory.size {
                 case .ready(.some):
+                    Button("Open", action: openAction)
                     Button("Delete", action: deleteAction)
                     Button("Refresh", action: refreshAction)
-                case .error, .notCalculated:
+                case .notCalculated:
+                    Button("Open", action: openAction)
+                    Button("Refresh", action: refreshAction)
+                case .error:
                     Button("Refresh", action: refreshAction)
                 default:
                     EmptyView()
