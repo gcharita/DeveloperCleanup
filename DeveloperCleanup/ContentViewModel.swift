@@ -10,10 +10,12 @@ import Foundation
 struct Directory: Codable {
     let name: String
     let path: String
+    let autoCalculate: Bool?
 }
 
 class SizedDirectory: ObservableObject {
     enum DirectorySize {
+        case notCalculated
         case calculating
         case ready(value: String?)
         case error(Error)
@@ -32,6 +34,15 @@ class SizedDirectory: ObservableObject {
     init(directory: Directory) {
         name = directory.name
         path = directory.path.replacingOccurrences(of: "~", with: FileManager.default.homeDirectoryForCurrentUser.path)
+        if directory.autoCalculate != false {
+            calculateSize()
+        } else {
+            size = .notCalculated
+        }
+    }
+    
+    func calculateSize() {
+        size = .calculating
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             let backgroundSize = size(forPath: path)
             DispatchQueue.main.async { [self] in
@@ -71,6 +82,10 @@ class ContentViewModel: ObservableObject {
         } catch {
             print("Error: \(error)")
         }
+    }
+    
+    func refresh(directory: SizedDirectory) {
+        directory.calculateSize()
     }
     
     private func updateDirectories() {

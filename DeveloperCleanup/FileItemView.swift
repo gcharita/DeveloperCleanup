@@ -9,7 +9,9 @@ import SwiftUI
 
 struct FileItemView: View {
     @ObservedObject var directory: SizedDirectory
+    let openAction: () -> Void
     let deleteAction: () -> Void
+    let refreshAction: () -> Void
     
     @State var isHover = false
     
@@ -23,14 +25,26 @@ struct FileItemView: View {
             HStack {
                 Text(directory.name)
                     .frame(maxWidth: .infinity, minHeight: 21, alignment: .leading)
-                if isHover, case .ready(.some) = directory.size {
+                Button("Open", action: openAction)
+                switch directory.size {
+                case .ready(.some):
                     Button("Delete", action: deleteAction)
+                    Button("Refresh", action: refreshAction)
+                case .error, .notCalculated:
+                    Button("Refresh", action: refreshAction)
+                default:
+                    EmptyView()
                 }
                 switch directory.size {
                 case .ready(let value):
                     Text(value ?? "Not exists")
                 case .calculating:
-                    ProgressView().progressViewStyle(.circular).controlSize(.small)
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .controlSize(.small)
+                case .notCalculated:
+                    Text("Not calculated")
                 default:
                     Text("Not exists")
                 }
@@ -38,5 +52,43 @@ struct FileItemView: View {
             .padding()
         }
         .onHover { isHover = $0 }
+    }
+}
+
+struct FileItemView_Previews: PreviewProvider {
+    struct IdentifiablePreviewLayout: Identifiable {
+        var id: String
+        var previewLayout: PreviewLayout
+    }
+    
+    static var previews: some View {
+        let previewLayouts = [
+            IdentifiablePreviewLayout(
+                id: "400x50",
+                previewLayout: .fixed(width: 400, height: 50)
+            ),
+//            IdentifiablePreviewLayout(
+//                id: "200x40",
+//                previewLayout: .fixed(width: 200, height: 40)
+//            ),
+//            IdentifiablePreviewLayout(
+//                id: "150x30",
+//                previewLayout: .fixed(width: 150, height: 30)
+//            ),
+        ]
+        
+        return ForEach(previewLayouts) { myLayout in
+            FileItemView(
+                directory: SizedDirectory(
+                    name: "Test Name",
+                    path: "",
+                    size: .notCalculated
+                ),
+                openAction: {},
+                deleteAction: {},
+                refreshAction: {},
+                isHover: true
+            ).previewLayout(myLayout.previewLayout)
+        }
     }
 }

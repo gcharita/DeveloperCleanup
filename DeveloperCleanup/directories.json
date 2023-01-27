@@ -1,7 +1,8 @@
 [
     {
         "name": "DerivedData",
-        "path": "~/Library/Developer/Xcode/DerivedData"
+        "path": "~/Library/Developer/Xcode/DerivedData",
+        "autoCalculate": false
     },
     {
         "name": "Archives",
@@ -17,6 +18,7 @@
     },
     {
         "name": "Additional Simulators",
-        "path": "/Library/Developer/CoreSimulator/Profiles/Runtimes"
+        "path": "/Library/Developer/CoreSimulator/Profiles/Runtimes",
+        "autoCalculate": false
     }
 ]
