@@ -18,6 +18,7 @@
 		9FD355A72778925D0049FE05 /* DeveloperCleanupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD355A62778925D0049FE05 /* DeveloperCleanupTests.swift */; };
 		9FD355B12778925D0049FE05 /* DeveloperCleanupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD355B02778925D0049FE05 /* DeveloperCleanupUITests.swift */; };
 		9FD355B32778925D0049FE05 /* DeveloperCleanupUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD355B22778925D0049FE05 /* DeveloperCleanupUITestsLaunchTests.swift */; };
+		9FDDB06229894F2D00CB5A3F /* ConfirmDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FDDB06129894F2D00CB5A3F /* ConfirmDeleteView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		9FD355AC2778925D0049FE05 /* DeveloperCleanupUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeveloperCleanupUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD355B02778925D0049FE05 /* DeveloperCleanupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperCleanupUITests.swift; sourceTree = "<group>"; };
 		9FD355B22778925D0049FE05 /* DeveloperCleanupUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperCleanupUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9FDDB06129894F2D00CB5A3F /* ConfirmDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeleteView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 			children = (
 				9FD355942778925B0049FE05 /* DeveloperCleanupApp.swift */,
 				9FD355962778925B0049FE05 /* ContentView.swift */,
+				9FDDB06129894F2D00CB5A3F /* ConfirmDeleteView.swift */,
 				9F8A32D1277C7D300000228C /* FileItemView.swift */,
 				9F8A32CF277C7CBF0000228C /* ContentViewModel.swift */,
 				9FD355982778925D0049FE05 /* Assets.xcassets */,
@@ -274,6 +277,7 @@
 			files = (
 				9FD355972778925B0049FE05 /* ContentView.swift in Sources */,
 				9F8A32D6277C87170000228C /* Optional+Convenience.swift in Sources */,
+				9FDDB06229894F2D00CB5A3F /* ConfirmDeleteView.swift in Sources */,
 				9FD355952778925B0049FE05 /* DeveloperCleanupApp.swift in Sources */,
 				9F8A32D0277C7CBF0000228C /* ContentViewModel.swift in Sources */,
 				9F8A32D2277C7D300000228C /* FileItemView.swift in Sources */,

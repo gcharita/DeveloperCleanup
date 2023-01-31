@@ -13,25 +13,29 @@ struct Directory: Codable {
     let autoCalculate: Bool?
 }
 
-class SizedDirectory: ObservableObject {
+class SizedDirectory: ObservableObject, Identifiable {
     enum DirectorySize {
         case notCalculated
         case calculating
         case ready(value: String?)
         case error(Error)
+        case deleting
     }
     
+    let id: String
     let name: String
     let path: String
     @Published var size: DirectorySize = .calculating
     
     init(name: String, path: String, size: SizedDirectory.DirectorySize) {
+        id = name
         self.name = name
         self.path = path
         self.size = size
     }
     
     init(directory: Directory) {
+        id = directory.name
         name = directory.name
         path = directory.path.replacingOccurrences(of: "~", with: FileManager.default.homeDirectoryForCurrentUser.path)
         if directory.autoCalculate != false {
@@ -67,6 +71,7 @@ class SizedDirectory: ObservableObject {
 class ContentViewModel: ObservableObject {
     @Published var directories = [SizedDirectory]()
     @Published var viewHeight: CGFloat?
+    @Published var directoryToDelete: SizedDirectory?
     
     init(directories: [SizedDirectory] = []) {
         if !directories.isEmpty {
@@ -77,13 +82,27 @@ class ContentViewModel: ObservableObject {
         }
     }
     
+    func confirmDelete(directory: SizedDirectory) {
+        directoryToDelete = directory
+    }
+    
+    func cancelDelete() {
+        directoryToDelete = nil
+    }
+    
     func delete(directory: SizedDirectory) {
-        do {
-            try FileManager.default.removeItem(atPath: directory.path)
-            updateDirectories()
-        } catch {
-            print("Error: \(error)")
+        directory.size = .deleting
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                try FileManager.default.removeItem(atPath: directory.path)
+            } catch {
+                print("Error: \(error)")
+            }
+            DispatchQueue.main.async {
+                directory.calculateSize()
+            }
         }
+        directoryToDelete = nil
     }
     
     func refresh(directory: SizedDirectory) {

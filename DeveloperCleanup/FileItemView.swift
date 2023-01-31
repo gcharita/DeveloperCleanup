@@ -42,12 +42,19 @@ struct FileItemView: View {
                 case .ready(let value):
                     Text(value ?? "Not exists")
                 case .calculating:
+                    Text("Calculating")
                     Spacer()
                     ProgressView()
                         .progressViewStyle(.circular)
                         .controlSize(.small)
                 case .notCalculated:
                     Text("Not calculated")
+                case .deleting:
+                    Text("Deleting")
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .controlSize(.small)
                 default:
                     Text("Not exists")
                 }

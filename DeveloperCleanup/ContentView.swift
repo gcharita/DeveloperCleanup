@@ -16,11 +16,14 @@ struct ContentView: View {
                 FileItemView(
                     directory: directory,
                     openAction: {
-                        guard case .ready(.some) = directory.size else { return }
-                        NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: directory.path)
+                        switch directory.size {
+                        case .ready(.some), .notCalculated:
+                            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: directory.path)
+                        default: ()
+                        }
                     },
                     deleteAction: {
-                        viewModel.delete(directory: directory)
+                        viewModel.confirmDelete(directory: directory)
                     },
                     refreshAction: {
                         viewModel.refresh(directory: directory)
@@ -29,6 +32,19 @@ struct ContentView: View {
             }
         }
         .frame(height: viewModel.viewHeight)
+        .sheet(
+            item: $viewModel.directoryToDelete,
+            onDismiss: {
+                print("onDismiss called")
+            },
+            content: { directory in
+                ConfirmDeleteView(
+                    directory: directory,
+                    cancelAction: viewModel.cancelDelete,
+                    confirmAction: viewModel.delete(directory:)
+                )
+            }
+        )
     }
 }
 
