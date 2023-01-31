@@ -16,7 +16,7 @@ struct ContentView: View {
                 FileItemView(
                     directory: directory,
                     openAction: {
-                        switch directory.size {
+                        switch directory.state {
                         case .ready(.some), .notCalculated:
                             NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: directory.path)
                         default: ()

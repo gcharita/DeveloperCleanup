@@ -14,7 +14,7 @@ struct Directory: Codable {
 }
 
 class SizedDirectory: ObservableObject, Identifiable {
-    enum DirectorySize {
+    enum State {
         case notCalculated
         case calculating
         case ready(value: String?)
@@ -25,13 +25,13 @@ class SizedDirectory: ObservableObject, Identifiable {
     let id: String
     let name: String
     let path: String
-    @Published var size: DirectorySize = .calculating
+    @Published var state: State = .calculating
     
-    init(name: String, path: String, size: SizedDirectory.DirectorySize) {
+    init(name: String, path: String, size: SizedDirectory.State) {
         id = name
         self.name = name
         self.path = path
-        self.size = size
+        self.state = size
     }
     
     init(directory: Directory) {
@@ -41,24 +41,24 @@ class SizedDirectory: ObservableObject, Identifiable {
         if directory.autoCalculate != false {
             calculateSize()
         } else {
-            size = .notCalculated
+            state = .notCalculated
         }
     }
     
     func calculateSize() {
-        size = .calculating
+        state = .calculating
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             let backgroundSize = size(forPath: path)
             DispatchQueue.main.async { [self] in
-                size = backgroundSize
-                if case .ready(let value) = size {
+                state = backgroundSize
+                if case .ready(let value) = state {
                     print("Size calculated for \(path): \(value ?? "mil")")
                 }
             }
         }
     }
     
-    private func size(forPath path: String) -> DirectorySize {
+    private func size(forPath path: String) -> State {
         do {
             return .ready(value: try URL(fileURLWithPath: path).sizeOnDisk())
         } catch {
@@ -91,7 +91,7 @@ class ContentViewModel: ObservableObject {
     }
     
     func delete(directory: SizedDirectory) {
-        directory.size = .deleting
+        directory.state = .deleting
         DispatchQueue.global(qos: .userInitiated).async {
             do {
                 try FileManager.default.removeItem(atPath: directory.path)

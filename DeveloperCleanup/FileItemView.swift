@@ -25,7 +25,7 @@ struct FileItemView: View {
             HStack {
                 Text(directory.name)
                     .frame(maxWidth: .infinity, minHeight: 21, alignment: .leading)
-                switch directory.size {
+                switch directory.state {
                 case .ready(.some):
                     Button("Open", action: openAction)
                     Button("Delete", action: deleteAction)
@@ -38,7 +38,7 @@ struct FileItemView: View {
                 default:
                     EmptyView()
                 }
-                switch directory.size {
+                switch directory.state {
                 case .ready(let value):
                     Text(value ?? "Not exists")
                 case .calculating:
