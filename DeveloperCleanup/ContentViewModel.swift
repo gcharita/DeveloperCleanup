@@ -154,6 +154,10 @@ extension URL {
             urls = try FileManager.default.contentsOfDirectory(at: self, includingPropertiesForKeys: nil).lazy
         }
         return try urls.reduce(0) { (result: Int, next: URL) in
+            if try next.resourceValues(forKeys: [.isVolumeKey]).isVolume == true {
+                let fileSize = try next.directoryTotalAllocatedSize() ?? 0
+                return fileSize + result
+            }
             let fileSize = try next.resourceValues(forKeys: [.totalFileAllocatedSizeKey]).totalFileAllocatedSize ?? 0
             return fileSize + result
         }

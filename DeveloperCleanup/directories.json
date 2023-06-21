@@ -22,6 +22,11 @@
         "autoCalculate": false
     },
     {
+        "name": "Simulator Volumes",
+        "path": "/Library/Developer/CoreSimulator/Volumes",
+        "autoCalculate": false
+    },
+    {
         "name": "iPhone Software Updates",
         "path": "~/Library/iTunes/iPhone Software Updates"
     },
