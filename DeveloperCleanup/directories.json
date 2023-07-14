@@ -31,6 +31,10 @@
         "path": "~/Library/iTunes/iPhone Software Updates"
     },
     {
+        "name": "iPad Software Updates",
+        "path": "~/Library/iTunes/iPad Software Updates"
+    },
+    {
         "name": "Previous iTunes Libraries",
         "path": "~/Music/iTunes/Previous iTunes Libraries"
     },
